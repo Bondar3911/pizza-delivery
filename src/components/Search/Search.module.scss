@@ -1,0 +1,23 @@
+.root {
+  position: relative;
+  left: -80px;
+  svg {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 9px;
+    top: 16px;
+    opacity: 0.2;
+  }
+}
+
+.input {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 15px 33px;
+  width: 400px;
+  border-radius: 15px;
+  font-size: 16px;
+  &:focus {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+  }
+}
