@@ -87,6 +87,7 @@ export const Home = () => {
           ? [...new Array(8)].map((_, index) => <Skeleton key={index} />)
           : pizzas.map((obj) => (
               <PizzaBlock
+                id={obj.id}
                 key={obj.id}
                 title={obj.title}
                 price={obj.price}
