@@ -1,11 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { clearCart } from "../redux/slices/cartSlice";
 import CartItem from "../components/CartItem";
+import CartEmpty from "../components/CartEmpty";
 
 export const Cart = () => {
   const dispatch = useDispatch();
+  const clear = () => {
+    dispatch(clearCart());
+  };
   const items = useSelector((state) => state.cart.items);
+  const pizzaTotalPrice = items.reduce(
+    (sum, item) => sum + item.price * item.count,
+    0
+  );
+  const totalPizzaCount = items.reduce((sum, item) => sum + item.count, 0);
+
+  if (!totalPizzaCount) {
+    return <CartEmpty />;
+  }
+
   return (
     <div className="container container--cart">
       <div className="cart">
@@ -42,7 +57,7 @@ export const Cart = () => {
             </svg>
             Корзина
           </h2>
-          <div className="cart__clear">
+          <div onClick={clear} className="cart__clear">
             <svg
               width="20"
               height="20"
@@ -84,19 +99,19 @@ export const Cart = () => {
           </div>
         </div>
         <div className="content__items">
-          {items.map((item) => {
-            <CartItem key={item.id} {...item} />;
-          })}
+          {items.map((item) => (
+            <CartItem key={item.id} {...item} />
+          ))}
         </div>
         <div className="cart__bottom">
           <div className="cart__bottom-details">
             <span>
               {" "}
-              Всего пицц: <b>3 шт.</b>{" "}
+              Всего пицц: <b>{totalPizzaCount} шт.</b>{" "}
             </span>
             <span>
               {" "}
-              Сумма заказа: <b>900 ₽</b>{" "}
+              Сумма заказа: <b>{pizzaTotalPrice} $</b>{" "}
             </span>
           </div>
           <div className="cart__bottom-buttons">
