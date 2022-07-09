@@ -6,22 +6,23 @@ import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlock/skeleton";
 import Pagination from "../components/Pagination";
 import { sortList } from "../components/Sort";
+import { fetchPizza } from "../redux/slices/pizzaSlice";
 import { SearchContext } from "../App";
 import {
   setCategoryId,
   setPageCount,
   setFilters,
 } from "../redux/slices/filterSlice";
-import axios from "axios";
 import qs from "qs";
 import { useNavigate } from "react-router-dom";
+
 export const Home = () => {
   const { categoryId, sort, pageCount } = useSelector((state) => state.filter);
+  const { items, status } = useSelector((state) => state.pizza);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [pizzas, setPizzas] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
+  // const [isLoading, setIsLoading] = React.useState(true);
 
   const onClickCategory = (id) => {
     dispatch(setCategoryId(id));
@@ -46,26 +47,26 @@ export const Home = () => {
     }
   }, [dispatch]);
 
-  React.useEffect(() => {
-    setIsLoading(true);
-
+  const getPizzas = async () => {
+    // setIsLoading(true);
     const order = sort.sortProperty.includes("-") ? "asc" : "desc";
     const sortBy = sort.sortProperty.replace("-", "");
     const category = categoryId > 0 ? `category=${categoryId}` : "";
     const search = searchValue ? `&search=${searchValue}` : "";
 
-    axios
-      .get(
-        `https://62a09da9a9866630f81374d1.mockapi.io/pizzas?page=${pageCount}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-      )
-      .then((res) => {
-        setPizzas(res.data);
-        setIsLoading(false);
-      });
-
-    window.scrollTo(0, 0);
+    dispatch(
+      fetchPizza({
+        order,
+        sortBy,
+        category,
+        search,
+        pageCount,
+      })
+    );
+  };
+  React.useEffect(() => {
+    getPizzas();
   }, [categoryId, sort.sortProperty, searchValue, pageCount]);
-
   React.useEffect(() => {
     const queryString = qs.stringify({
       sortProperty: sort.sortProperty,
@@ -73,7 +74,7 @@ export const Home = () => {
       pageCount,
     });
     navigate(`?${queryString}`);
-  }, [categoryId, sort.sortProperty, pageCount, navigate]);
+  }, [categoryId, sort.sortProperty, searchValue, pageCount, navigate]);
 
   return (
     <div className="container">
@@ -83,9 +84,9 @@ export const Home = () => {
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
-        {isLoading
+        {status === "loading"
           ? [...new Array(8)].map((_, index) => <Skeleton key={index} />)
-          : pizzas.map((obj) => (
+          : items.map((obj) => (
               <PizzaBlock
                 id={obj.id}
                 key={obj.id}
