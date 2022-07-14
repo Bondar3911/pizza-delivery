@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { clearCart } from "../redux/slices/cartSlice";
+import { clearCart, selectCart } from "../redux/slices/cartSlice";
 import CartItem from "../components/CartItem";
 import CartEmpty from "../components/CartEmpty";
 
@@ -10,7 +10,7 @@ export const Cart = () => {
   const clear = () => {
     dispatch(clearCart());
   };
-  const items = useSelector((state) => state.cart.items);
+  const { items } = useSelector(selectCart);
   const pizzaTotalPrice = items.reduce(
     (sum, item) => sum + item.price * item.count,
     0

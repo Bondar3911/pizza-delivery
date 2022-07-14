@@ -79,6 +79,9 @@ body {
       margin: 0;
     }
   }
+  &--loading {
+    padding: 15%;
+  }
 }
 
 .cart {
@@ -342,4 +345,24 @@ body {
       font-size: 18px;
     }
   }
+}
+@keyframes donut-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.donut {
+  align-items: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border: 8px solid rgba(0, 0, 0, 0.1);
+  border-left-color: $orange;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: donut-spin 1.2s linear infinite;
 }

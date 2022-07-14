@@ -1,4 +1,4 @@
-@import '../variables';
+@import "../variables";
 
 .categories {
   ul {
@@ -11,12 +11,12 @@
       margin-right: 10px;
       font-weight: bold;
       cursor: pointer;
-      transition: background-color 0.1s ease-in-out;
-      transition: .5s background-color;
+      transition: 0.2s background-color;
+      transition: 0.2s color ease-in-out;
       @include noselect();
 
       &:hover {
-        background-color: darken(#f9f9f9, 2%);
+        color: $orange;
       }
 
       &:active {
@@ -26,7 +26,7 @@
       &.active {
         background-color: $orange;
         color: #fff;
-        transition: .8s background-color;
+        transition: 0.3s background-color;
       }
     }
   }
