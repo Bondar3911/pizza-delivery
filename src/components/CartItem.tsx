@@ -4,15 +4,32 @@ import {
   addToCart,
   removeFromCart,
   minusFromCart,
+  CartItem as CartItemType,
 } from "../redux/slices/cartSlice";
 
-const CartItem = ({ id, title, type, imageUrl, price, count }) => {
+type CartItemProps = {
+  id: number;
+  title: string;
+  type: string;
+  imageUrl: string;
+  price: number;
+  count: number;
+};
+
+const CartItem: React.FC<CartItemProps> = ({
+  id,
+  title,
+  type,
+  imageUrl,
+  price,
+  count,
+}) => {
   const dispatch = useDispatch();
   const onAddPizza = () => {
     dispatch(
       addToCart({
         id,
-      })
+      } as CartItemType)
     );
   };
   const minusPizza = () => {

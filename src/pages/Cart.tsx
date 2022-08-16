@@ -5,17 +5,20 @@ import { clearCart, selectCart } from "../redux/slices/cartSlice";
 import CartItem from "../components/CartItem";
 import CartEmpty from "../components/CartEmpty";
 
-export const Cart = () => {
+export const Cart: React.FC = () => {
   const dispatch = useDispatch();
   const clear = () => {
     dispatch(clearCart());
   };
   const { items } = useSelector(selectCart);
   const pizzaTotalPrice = items.reduce(
-    (sum, item) => sum + item.price * item.count,
+    (sum: number, item: any) => sum + item.price * item.count,
     0
   );
-  const totalPizzaCount = items.reduce((sum, item) => sum + item.count, 0);
+  const totalPizzaCount = items.reduce(
+    (sum: number, item: any) => sum + item.count,
+    0
+  );
 
   if (!totalPizzaCount) {
     return <CartEmpty />;
@@ -99,7 +102,7 @@ export const Cart = () => {
           </div>
         </div>
         <div className="content__items">
-          {items.map((item) => (
+          {items.map((item: any) => (
             <CartItem key={item.id} {...item} />
           ))}
         </div>

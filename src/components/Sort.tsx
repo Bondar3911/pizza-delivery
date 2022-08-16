@@ -2,7 +2,10 @@ import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectFilter, setSort } from "../redux/slices/filterSlice";
 
-export const sortList = [
+type PopupClick = MouseEvent & {
+  path: Node[];
+};
+export const sortList: SortItem[] = [
   { name: "популярности ↑", sortProperty: "rating" },
   { name: "популярности ↓", sortProperty: "-rating" },
   { name: "цене ↑", sortProperty: "price" },
@@ -10,21 +13,27 @@ export const sortList = [
   { name: "алфавиту ↑", sortProperty: "title" },
   { name: "алфавиту ↓", sortProperty: "-title" },
 ];
-function Sort({ type, setType }) {
+
+type SortItem = {
+  name: string;
+  sortProperty: string;
+};
+function Sort() {
   const dispatch = useDispatch();
   const { sort } = useSelector(selectFilter);
-  const sortRef = useRef();
+  const sortRef = useRef<HTMLDivElement>(null);
 
   const [open, setOpen] = React.useState(false);
 
-  const onClickList = (obj) => {
+  const onClickList = (obj: SortItem) => {
     dispatch(setSort(obj));
     setOpen(false);
   };
 
   React.useEffect(() => {
-    const clickOutsideMenu = (event) => {
-      if (!event.path.includes(sortRef.current)) {
+    const clickOutsideMenu = (event: MouseEvent) => {
+      const _event = event as PopupClick;
+      if (sortRef.current && !_event.path.includes(sortRef.current)) {
         setOpen(false);
       }
     };

@@ -3,11 +3,14 @@ import Search from "./Search";
 import { useSelector } from "react-redux";
 import { selectCart } from "../redux/slices/cartSlice";
 
-function Header({ searchValue, setSearchValue }) {
+function Header() {
   const { items } = useSelector(selectCart);
-  const totalPizzaCount = items.reduce((sum, item) => sum + item.count, 0);
+  const totalPizzaCount = items.reduce(
+    (sum: number, item: any) => sum + item.count,
+    0
+  );
   const totalPrice = items.reduce(
-    (sum, item) => sum + item.price * item.count,
+    (sum: number, item: any) => sum + item.price * item.count,
     0
   );
   const location = useLocation();
@@ -23,9 +26,7 @@ function Header({ searchValue, setSearchValue }) {
             </div>
           </div>
         </Link>
-        {location.pathname === "/" && (
-          <Search searchValue={searchValue} setSearchValue={setSearchValue} />
-        )}
+        {location.pathname === "/" && <Search />}
         {location.pathname !== "/cart" && (
           <>
             <div className="header__cart">
